@@ -15,7 +15,7 @@ def sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFra
     return DynamicFrame.fromDF(result, glueContext, transformation_ctx)
 
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "bucket_name"])
 sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
@@ -133,7 +133,7 @@ sql_node1640829404186 = sparkSqlQuery(
 
 # Script generated for node target_S3_location
 target_S3_location_node1640829510544 = glueContext.getSink(
-    path="s3://my-ab3-bucket/output/campaign/",
+    path=args["bucket_name"].join(("s3://", "/output/campaign/")),
     connection_type="s3",
     updateBehavior="UPDATE_IN_DATABASE",
     partitionKeys=[],
